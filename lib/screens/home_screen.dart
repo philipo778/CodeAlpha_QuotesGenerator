@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../data/quotes_data.dart';
+import '../widgets/quote_card.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -21,8 +24,13 @@ class HomeScreen extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
+                  color: Color(0xFF22D3EE),
                 ),
               ),
+
+              const SizedBox(height: 32),
+
+              QuoteCard(quote: quotes[0]),
             ],
           ),
         ),
