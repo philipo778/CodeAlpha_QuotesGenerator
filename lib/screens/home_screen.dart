@@ -1,15 +1,43 @@
 import 'package:flutter/material.dart';
 
-import '../data/quotes_data.dart';
+import '../models/quote.dart';
+import '../services/quote_service.dart';
 import '../widgets/quote_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final QuoteService _quoteService = QuoteService();
+
+  late Quote currentQuote;
+
+  @override
+  void initState() {
+    super.initState();
+
+    currentQuote = _quoteService.getRandomQuote();
+  }
+
+  void generateNewQuote() {
+    setState(() {
+      currentQuote = _quoteService.getRandomQuote();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Q. QUOTES')),
+      appBar: AppBar(
+        title: const Text(
+          'Q. QUOTES',
+          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 2),
+        ),
+      ),
 
       body: SafeArea(
         child: Padding(
@@ -18,6 +46,8 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 20),
+
               const Text(
                 'YOUR DAILY INSPIRATION',
                 style: TextStyle(
@@ -28,9 +58,44 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 8),
 
-              QuoteCard(quote: quotes[0]),
+              const Text(
+                'Words that inspire greatness.',
+                style: TextStyle(fontSize: 16, color: Color(0xFFA7B0C0)),
+              ),
+
+              const Spacer(),
+
+              QuoteCard(quote: currentQuote),
+
+              const Spacer(),
+
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: generateNewQuote,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF8B5CF6),
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: const Text(
+                    'NEW QUOTE',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
             ],
           ),
         ),
