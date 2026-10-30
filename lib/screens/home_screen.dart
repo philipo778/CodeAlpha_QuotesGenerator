@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/quote.dart';
 import '../services/quote_service.dart';
 import '../widgets/quote_card.dart';
+import '../services/share_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,6 +14,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final QuoteService _quoteService = QuoteService();
+  final ShareService _shareService = ShareService();
+
+  Future<void> shareCurrentQuote() async {
+    await _shareService.shareQuote(currentQuote);
+  }
 
   late Quote currentQuote;
 
@@ -118,6 +124,32 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               const SizedBox(height: 20),
+
+              const SizedBox(height: 14),
+
+              SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: OutlinedButton.icon(
+                  onPressed: shareCurrentQuote,
+                  icon: const Icon(Icons.share_rounded),
+                  label: const Text(
+                    'SHARE QUOTE',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: const Color(0xFF22D3EE),
+                    side: const BorderSide(color: Color(0xFF22D3EE)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
