@@ -67,7 +67,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
               const Spacer(),
 
-              QuoteCard(quote: currentQuote),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                switchInCurve: Curves.easeOut,
+                switchOutCurve: Curves.easeIn,
+                transitionBuilder: (child, animation) {
+                  final slideAnimation = Tween<Offset>(
+                    begin: const Offset(0, 0.08),
+                    end: Offset.zero,
+                  ).animate(animation);
+
+                  return FadeTransition(
+                    opacity: animation,
+                    child: SlideTransition(
+                      position: slideAnimation,
+                      child: child,
+                    ),
+                  );
+                },
+                child: QuoteCard(
+                  key: ValueKey(currentQuote.text),
+                  quote: currentQuote,
+                ),
+              ),
 
               const Spacer(),
 
