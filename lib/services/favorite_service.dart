@@ -1,9 +1,9 @@
-
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/quote.dart';
+import '../models/quote_category.dart';
 
 class FavoriteService {
   static const String _favoritesKey = 'favorite_quotes';
@@ -16,6 +16,7 @@ class FavoriteService {
       return jsonEncode({
         'text': quote.text,
         'author': quote.author,
+        'category': quote.category.name,
       });
     }).toList();
 
@@ -36,6 +37,9 @@ class FavoriteService {
       return Quote(
         text: quoteMap['text'] as String,
         author: quoteMap['author'] as String,
+        category: QuoteCategory.values.firstWhere(
+              (category) => category.name == quoteMap['category'],
+        ),
       );
     }).toList();
   }
